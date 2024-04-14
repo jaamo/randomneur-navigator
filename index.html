@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Randomneur Navigator</title>
+<style>
+    body, html {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: #121212;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #00FFFF;
+        font-family: Arial, sans-serif;
+    }
+    #direction {
+        font-size: 24px;
+        height: 400px;
+    }
+    #direction span {
+        display: none;
+        margin-top: 50px;
+    }
+    #direction span svg {
+        width: 200px;
+        height: 200px;
+    }
+    .button {
+        width: 130px;
+        height: 130px;
+        margin: 10px;
+        background: #00FFFF;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.1s;
+    }
+    .button:active {
+        transform: scale(0.9);
+    }
+    .grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        width: calc(100% - 40px); /* Full width minus margin on both sides */
+        max-width: 460px;
+    }
+    .title {
+        margin-top: 10px;
+    }
+    svg {
+        fill: none;
+        stroke: black;
+        stroke-width: 8px;
+    }
+    @keyframes fadeInZoom {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+</style>
+</head>
+<body>
+<div id="direction">
+    <span id="to-left">
+        <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 50 100 L 50 50 L 10 50" stroke="#00FFFF" fill="none"/>
+            <path d="M 10 50 L 20 40 L 20 60 Z"  stroke="#00FFFF" fill="#00FFFF"/>
+        </svg>
+    </span>
+    <span id="to-right">
+        <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 50 100 L 50 50 L 90 50" stroke="#00FFFF" fill="none"/>
+            <path d="M 90 50 L 80 40 L 80 60 Z" stroke="#00FFFF" fill="#00FFFF"/>
+        </svg>          
+    </span>
+    <span id="to-straight">
+        <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 50 100 L 50 10" stroke="#00FFFF" fill="none"/>
+            <path d="M 50 10 L 40 20 L 60 20 Z" stroke="#00FFFF" fill="#00FFFF"/>
+        </svg>          
+    </span>        
+  </div>
+<div class="grid">
+    <div class="button" onclick="getDirection(['to-left', 'to-straight'])">
+        <svg viewbox="0 0 50 50">
+            <line x1="25" y1="0" x2="25" y2="50" />
+            <line x1="0" y1="25" x2="25" y2="25" />
+        </svg>
+    </div>
+    <div class="button" onclick="getDirection(['to-right', 'to-straight'])">
+        <svg viewbox="0 0 50 50">
+            <line x1="25" y1="0" x2="25" y2="50" />
+            <line x1="25" y1="25" x2="50" y2="25" />
+        </svg>
+    </div>
+    <div class="button" onclick="getDirection(['to-left', 'to-right', 'to-straight'])">
+        <svg viewbox="0 0 50 50">
+            <line x1="25" y1="0" x2="25" y2="50" />
+            <line x1="0" y1="25" x2="50" y2="25" />
+        </svg>
+    </div>
+    <div class="button" onclick="getDirection(['to-left', 'to-right'])">
+        <svg viewbox="0 0 50 50">
+            <line x1="25" y1="25" x2="25" y2="50" />
+            <line x1="0" y1="25" x2="25" y2="25" />
+            <line x1="25" y1="25" x2="50" y2="25" />
+        </svg>
+    </div>
+</div>
+<div class="title">Randomneur Navigator&#8482;</div>
+<script>
+    const allDirections = ["to-left", "to-right", "to-straight"];
+    function getDirection(directions) {
+        const choice = directions[Math.floor(Math.random() * directions.length)];
+        const audio = new Audio(choice.toLowerCase() + '.mp3');
+        audio.play();
+        const directionLabel = document.getElementById('direction');
+
+        allDirections.map((key) => {
+            const icon = document.getElementById(key);
+            icon.style.display = 'none';
+        });
+
+        directionLabel.style.animation = 'none';
+        setTimeout(() => {
+            //directionLabel.textContent = choice;
+            const icon = document.getElementById(choice);
+            icon.style.display = 'block';
+            directionLabel.style.animation = 'fadeInZoom 0.5s'; // Reset animation
+        }, 10);
+
+}
+</script>
+</body>
+</html>
